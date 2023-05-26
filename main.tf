@@ -104,15 +104,15 @@ resource "aws_instance" "kubernetes_node2" {
 }
 
 output "kubernetes_master" {
-  value = aws_instance.kubernetes_master.private_ip
+  value = aws_instance.kubernetes_master.public_ip
 }
 
 output "kubernetes_node1" {
-  value = aws_instance.kubernetes_node1.private_ip
+  value = aws_instance.kubernetes_node1.public_ip
 }
 
 output "kubernetes_node2" {
-  value = aws_instance.kubernetes_node2.private_ip
+  value = aws_instance.kubernetes_node2.public_ip
 }
 
 resource "null_resource" "inventory_creation" {
@@ -126,9 +126,9 @@ resource "null_resource" "inventory_creation" {
 provisioner "local-exec" {
   command = <<EOT
 sudo -S sh -c 'cat <<EOF > /etc/ansible/hosts
-kubernetes-master ansible_host=${aws_instance.kubernetes_master.private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=/root/poc.keypair.pem ansible_ssh_extra_args="-o StrictHostKeyChecking=accept-new"
-kubernetes-node1 ansible_host=${aws_instance.kubernetes_node1.private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=/root/poc.keypair.pem ansible_ssh_extra_args="-o StrictHostKeyChecking=accept-new"
-kubernetes-node2 ansible_host=${aws_instance.kubernetes_node2.private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=/root/poc.keypair.pem ansible_ssh_extra_args="-o StrictHostKeyChecking=accept-new"
+kubernetes-master ansible_host=${aws_instance.kubernetes_master.public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=/root/poc.keypair.pem ansible_ssh_extra_args="-o StrictHostKeyChecking=accept-new"
+kubernetes-node1 ansible_host=${aws_instance.kubernetes_node1.public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=/root/poc.keypair.pem ansible_ssh_extra_args="-o StrictHostKeyChecking=accept-new"
+kubernetes-node2 ansible_host=${aws_instance.kubernetes_node2.public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=/root/poc.keypair.pem ansible_ssh_extra_args="-o StrictHostKeyChecking=accept-new"
 EOF'
     EOT
   }
