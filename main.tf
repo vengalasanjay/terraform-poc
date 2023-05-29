@@ -1,10 +1,10 @@
 provider "aws" {
-  region = "us-east-1"  # Replace with your desired AWS region
+  region = "us-east-1"
 }
 
 # Create VPC
 resource "aws_vpc" "kubernetes_vpc" {
-  cidr_block = "10.0.0.0/16"  # Replace with your desired VPC CIDR block
+  cidr_block = "10.0.0.0/16"
 
   tags = {
     Name = "kubernetes-vpc"
@@ -14,8 +14,8 @@ resource "aws_vpc" "kubernetes_vpc" {
 # Create Subnet
 resource "aws_subnet" "kubernetes_subnet" {
   vpc_id     = aws_vpc.kubernetes_vpc.id
-  cidr_block = "10.0.1.0/24"  # Replace with your desired subnet CIDR block
-  availability_zone = "us-east-1a"  # Replace with your desired availability zone
+  cidr_block = "10.0.1.0/24" 
+  availability_zone = "us-east-1a" 
 
   tags = {
     Name = "kubernetes-subnet"
@@ -50,7 +50,6 @@ resource "aws_security_group" "kubernetes_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  # Add any additional ingress rules as needed
 
   egress {
     from_port   = 0
